@@ -8,5 +8,4 @@ routers:
   routes:
   - application_name: "mavkeses"
     paths:
-    - "/max"
-    - "/atlagos"
+    - "/*"
