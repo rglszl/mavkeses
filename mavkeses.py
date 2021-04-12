@@ -1,7 +1,19 @@
-import requests
+#!/usr/bin/env python3
 import json
-from flask import Flask
-app = Flask(__name__)
+
+import flask
+from flask import jsonify, Response
+from qovery_client.qovery import Qovery
+
+# --- START INIT ---
+
+app = flask.Flask(__name__)
+
+# this file is not used while deployed on Qovery
+configuration_file_path = '../.qovery/local_configuration.json'
+
+# get database configuration from Qovery
+qovery = Qovery(configuration_file_path=configuration_file_path)
 
 def getData():
     url="http://vonatinfo.mav-start.hu/map.aspx/getData"
@@ -35,6 +47,7 @@ def max():
     maxDelay, avgDelay = getData()
     return str(maxDelay)
 
+
 if __name__ == '__main__':
+    print('Server is ready!')
     app.run(host='0.0.0.0', port=5000)
-    
