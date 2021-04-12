@@ -1,0 +1,11 @@
+---
+application:
+  name: "mavkeses"
+  project: "mav"
+  organization: "QoveryCommunity"
+routers:
+- name: "main-mavkeses"
+  routes:
+  - application_name: "mavkeses"
+    paths:
+    - "/*"
