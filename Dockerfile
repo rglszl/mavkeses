@@ -7,4 +7,4 @@ COPY . /app
 WORKDIR /app/
 
 RUN pip install -r ../requirements.txt
-CMD python -u mav.py
+CMD python -u mavkeses.py
