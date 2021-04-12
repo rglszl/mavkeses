@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import json
-
+import requests
 import flask
 from flask import jsonify, Response
 from qovery_client.qovery import Qovery
