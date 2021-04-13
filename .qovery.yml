@@ -3,6 +3,10 @@ application:
   name: "mavkeses"
   project: "mavkeses"
   organization: "QoveryCommunity"
+databases:
+- type: "MYSQL"
+  name: "kesesek"
+  version: "8.0"
 routers:
 - name: "main-mavkeses"
   routes:
