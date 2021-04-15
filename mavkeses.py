@@ -5,7 +5,7 @@ from datetime import datetime
 import json
 import requests
 import mysql.connector
-from qovery_client.qovery import Qovery
+import os
 
 
 
@@ -54,15 +54,11 @@ class backgroundTask:
                     except:
                         pass
                     
-            configuration_file_path = '../.qovery/local_configuration.json'
-            qovery = Qovery(configuration_file_path=configuration_file_path)
-            database_name="mysql-kesesek"
-            db_conf = qovery.get_database_by_name(database_name)
             mydb = mysql.connector.connect(
-                    host=db_conf.host,
-                    user=db_conf.username,
-                    password=db_conf.password,
-                    database=database_name,
+                    host=os.environ.get('QOVERY_DATABASE_KESESEK_HOST'),
+                    user=os.environ.get('QOVERY_DATABASE_KESESEK_USERNAME'),
+                    password=os.environ.get('QOVERY_DATABASE_KESESEK_PASSWORD'),
+                    database=os.environ.get('QOVERY_DATABASE_KESESEK_NAME'),
                     buffered=True
                 )
             cursor = mydb.cursor()
@@ -83,16 +79,12 @@ app = Flask(__name__)
 
 @app.route('/keses')
 def keses():
-    configuration_file_path = '../.qovery/local_configuration.json'
-    qovery = Qovery(configuration_file_path=configuration_file_path)
-    database_name="mysql-kesesek"
-    db_conf = qovery.get_database_by_name(database_name)
     mydb = mysql.connector.connect(
-            host=db_conf.host,
-            user=db_conf.username,
-            password=db_conf.password,
-            database=database_name,
-            buffered=True
+                    host=os.environ.get('QOVERY_DATABASE_KESESEK_HOST'),
+                    user=os.environ.get('QOVERY_DATABASE_KESESEK_USERNAME'),
+                    password=os.environ.get('QOVERY_DATABASE_KESESEK_PASSWORD'),
+                    database=os.environ.get('QOVERY_DATABASE_KESESEK_NAME'),
+                    buffered=True
         )
     cursor = mydb.cursor()
     cursor.execute("SELECT KESES, MAX, TIMESTAMP FROM minden ORDER BY TIMESTAMP DESC LIMIT 1")
