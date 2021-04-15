@@ -94,7 +94,7 @@ def keses():
     (avgMav, maxMav) = cursor.fetchone()
     cursor.execute("SELECT KESES, MAX FROM gysev ORDER BY TIMESTAMP DESC LIMIT 1")
     (avgGysev, maxGysev) = cursor.fetchone()
-    return render_template("template.html", ts=datetime.fromtimestamp(int(ts), pytz.timezone("Europe/Budapest")), avgAll=avgAll, maxAll=maxAll,avgMav=avgMav, maxMav=maxMav,avgGysev=avgGysev,maxGysev=maxGysev)
+    return render_template("template.html", ts=datetime.fromtimestamp(int(ts), pytz.timezone("Europe/Budapest")).strftime('%Y-%m-%d %H:%M:%S'), avgAll=avgAll, maxAll=maxAll,avgMav=avgMav, maxMav=maxMav,avgGysev=avgGysev,maxGysev=maxGysev)
                    
 def main():
     try:
