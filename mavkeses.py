@@ -5,6 +5,9 @@ from datetime import datetime
 import json
 import requests
 import mysql.connector
+from qovery_client.qovery import Qovery
+
+
 
 class backgroundTask:
     def __init__(self):
@@ -50,11 +53,16 @@ class backgroundTask:
                         
                     except:
                         pass
+                    
+            configuration_file_path = '../.qovery/local_configuration.json'
+            qovery = Qovery(configuration_file_path=configuration_file_path)
+            database_name="mysql-kesesek"
+            db_conf = qovery.get_database_by_name(database_name)
             mydb = mysql.connector.connect(
-                    host="kesesek-qw7ou1ufan0eb3lj-svc.qovery.io",
-                    user="superuser",
-                    password="8x8IPd65GUJgF5SU",
-                    database="mysql-kesesek",
+                    host=db_conf.host,
+                    user=db_conf.username,
+                    password=db_conf.password,
+                    database=database_name,
                     buffered=True
                 )
             cursor = mydb.cursor()
@@ -75,13 +83,17 @@ app = Flask(__name__)
 
 @app.route('/keses')
 def keses():
-    mydb = mysql.connector.connect(
-        host="kesesek-qw7ou1ufan0eb3lj-svc.qovery.io",
-        user="superuser",
-        password="8x8IPd65GUJgF5SU",
-        database="mysql-kesesek",
-        buffered=True
-    )
+   configuration_file_path = '../.qovery/local_configuration.json'
+            qovery = Qovery(configuration_file_path=configuration_file_path)
+            database_name="mysql-kesesek"
+            db_conf = qovery.get_database_by_name(database_name)
+            mydb = mysql.connector.connect(
+                    host=db_conf.host,
+                    user=db_conf.username,
+                    password=db_conf.password,
+                    database=database_name,
+                    buffered=True
+                )
     cursor = mydb.cursor()
     cursor.execute("SELECT KESES, MAX, TIMESTAMP FROM minden ORDER BY TIMESTAMP DESC LIMIT 1")
     (avgAll, maxAll, ts) = cursor.fetchone()
