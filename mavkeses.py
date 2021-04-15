@@ -92,7 +92,8 @@ def keses():
             user=db_conf.username,
             password=db_conf.password,
             database=database_name,
-            buffered=True)
+            buffered=True
+        )
     cursor = mydb.cursor()
     cursor.execute("SELECT KESES, MAX, TIMESTAMP FROM minden ORDER BY TIMESTAMP DESC LIMIT 1")
     (avgAll, maxAll, ts) = cursor.fetchone()
