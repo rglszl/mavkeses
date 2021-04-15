@@ -83,11 +83,11 @@ app = Flask(__name__)
 
 @app.route('/keses')
 def keses():
-   configuration_file_path = '../.qovery/local_configuration.json'
-   qovery = Qovery(configuration_file_path=configuration_file_path)
-   database_name="mysql-kesesek"
-   db_conf = qovery.get_database_by_name(database_name)
-   mydb = mysql.connector.connect(
+    configuration_file_path = '../.qovery/local_configuration.json'
+    qovery = Qovery(configuration_file_path=configuration_file_path)
+    database_name="mysql-kesesek"
+    db_conf = qovery.get_database_by_name(database_name)
+    mydb = mysql.connector.connect(
             host=db_conf.host,
             user=db_conf.username,
             password=db_conf.password,
