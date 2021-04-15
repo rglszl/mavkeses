@@ -2,3 +2,4 @@ qovery-client==0.2.0
 Flask==1.0.2
 requests[security] == 2.9.1
 mysql-connector==2.2.9
+pytz==2019.3
