@@ -1,0 +1,64 @@
+<html>
+	<head>
+		<style>
+			body { 
+			  background-image: url('https://images.pexels.com/photos/258510/pexels-photo-258510.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260');
+			  background-repeat: no-repeat;
+			  background-attachment: fixed;
+			  background-position: center;
+			  color: white;
+			  font: italic small-caps bold 100px/1 Georgia, serif;			  
+			}
+			
+			.container {
+			  display: flex;
+			  justify-content: center;
+			  width: 100%;
+			}
+			.center {
+			  margin: 1;
+			  width: 40%;
+			position: absolute;
+			top: 50%;
+			-ms-transform: translateY(-50%);
+			transform: translateY(-50%);
+			
+			
+			backdrop-filter: blur(20px);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="center">
+				<table style="width:100%; ">
+				<caption>Az adatok ekkor frissültek utoljára: {{ts}}</caption>
+				  <tr>
+					<td>Jelenlegi átlagos késés az összes vonalon</td>
+					<td>{{avgAll}} perc</td>
+				  </tr>
+				  <tr>
+					<td>Jelenlegi átlagos késés a MÁV vonalain</td>
+					<td>{{avgMav}} perc</td>
+				  </tr>
+				  <tr>
+					<td>Jelenlegi átlagos késés a GYSEV vonalain</td>
+					<td>{{avgGysev}} perc</td>
+				  </tr>
+				  <tr>
+					<td>Jelenlegi maximális késés az összes vonalon</td>
+					<td>{{maxAll}} perc</td>
+				  </tr>
+				  <tr>
+					<td>Jelenlegi maximális késés a MÁV vonalain</td>
+					<td>{{maxMav}} perc</td>
+				  </tr>
+				  <tr>
+					<td>Jelenlegi maximális késés a GYSEV vonalain</td>
+					<td>{{maxGysev}} perc</td>
+				  </tr>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>
