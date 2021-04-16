@@ -66,9 +66,14 @@ class backgroundTask:
             insert_into_query = """
             INSERT INTO {} (timestamp, keses, max) VALUES ( UNIX_TIMESTAMP(CONVERT_TZ(LOCALTIME(), '+00:00', @@session.time_zone)), '%s', '%s' )
             """
-            cursor.execute(insert_into_query.format("minden"), (round(delaySum/numberOfTrains, 2), maxDelay))
-            cursor.execute(insert_into_query.format("mav"), (round(delaySumMav/numberOfTrainsMav, 2), maxDelayMav))
-            cursor.execute(insert_into_query.format("gysev"), (round(delaySumGysev/numberOfTrainsGysev, 2), maxDelayGysev))
+            
+            avgAll = round(delaySum/numberOfTrains, 2) if numberOfTrains>0 else 0
+            avgMav = round(delaySumMav/numberOfTrainsMav, 2) if numberOfTrains>0 else 0
+            avgGysev = round(delaySumGysev/numberOfTrainsGysev, 2) if numberOfTrains>0 else 0
+            
+            cursor.execute(insert_into_query.format("minden"), (avgAll, maxDelay))
+            cursor.execute(insert_into_query.format("mav"), (avgMav, maxDelayMav))
+            cursor.execute(insert_into_query.format("gysev"), (avgGysev, maxDelayGysev))
             mydb.commit()
 
             
