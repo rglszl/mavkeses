@@ -68,8 +68,8 @@ class backgroundTask:
             """
             
             avgAll = round(delaySum/numberOfTrains, 2) if numberOfTrains>0 else 0
-            avgMav = round(delaySumMav/numberOfTrainsMav, 2) if numberOfTrains>0 else 0
-            avgGysev = round(delaySumGysev/numberOfTrainsGysev, 2) if numberOfTrains>0 else 0
+            avgMav = round(delaySumMav/numberOfTrainsMav, 2) if numberOfTrainsMav>0 else 0
+            avgGysev = round(delaySumGysev/numberOfTrainsGysev, 2) if numberOfTrainsGysev>0 else 0
             
             cursor.execute(insert_into_query.format("minden"), (avgAll, maxDelay))
             cursor.execute(insert_into_query.format("mav"), (avgMav, maxDelayMav))
