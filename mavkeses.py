@@ -18,24 +18,24 @@ class backgroundTask:
         
     def run(self):
         while(True):
-            url="http://vonatinfo.mav-start.hu/map.aspx/getData"
-            headers={'Content-Type': 'application/json'}
-            data='{"a":"TRAINS","jo":{"pre":true,"history":false,"id":false}}'
+            try:
+                url="http://vonatinfo.mav-start.hu/map.aspx/getData"
+                headers={'Content-Type': 'application/json'}
+                data='{"a":"TRAINS","jo":{"pre":true,"history":false,"id":false}}'
 
-            jsondata = json.loads(requests.post(url, headers=headers, data=data).text)
+                jsondata = json.loads(requests.post(url, headers=headers, data=data).text)
 
-            numberOfTrainsGysev=0
-            numberOfTrainsMav=0
-            numberOfTrains=0
-            delaySumGysev=0
-            delaySumMav=0
-            delaySum=0
-            maxDelayGysev=0
-            maxDelayMav=0
-            maxDelay=0
-            for i in jsondata["d"]["result"]["Trains"]["Train"]:
-                for j in i:
-                    try:
+                numberOfTrainsGysev=0
+                numberOfTrainsMav=0
+                numberOfTrains=0
+                delaySumGysev=0
+                delaySumMav=0
+                delaySum=0
+                maxDelayGysev=0
+                maxDelayMav=0
+                maxDelay=0
+                for i in jsondata["d"]["result"]["Trains"]["Train"]:
+                    for j in i:
                         if maxDelay<int(i["@Delay"]):
                             maxDelay=int(i["@Delay"])
                         delaySum=delaySum+int(i["@Delay"])
@@ -51,32 +51,27 @@ class backgroundTask:
                                 maxDelayGysev=int(i["@Delay"])
                             delaySumGysev=delaySumGysev+int(i["@Delay"])
                             numberOfTrainsGysev=numberOfTrainsGysev+1
-                        
-                    except:
-                        pass
-                    
-            mydb = mysql.connector.connect(
-                    host=os.environ.get('QOVERY_DATABASE_KESESEK_HOST'),
-                    user=os.environ.get('QOVERY_DATABASE_KESESEK_USERNAME'),
-                    password=os.environ.get('QOVERY_DATABASE_KESESEK_PASSWORD'),
-                    database=os.environ.get('QOVERY_DATABASE_KESESEK_NAME'),
-                    buffered=True
-                )
-            cursor = mydb.cursor()
-            insert_into_query = """
-            INSERT INTO {} (timestamp, keses, max) VALUES ( UNIX_TIMESTAMP(CONVERT_TZ(LOCALTIME(), '+00:00', @@session.time_zone)), '%s', '%s' )
-            """
-            
-            avgAll = round(delaySum/numberOfTrains, 2) if numberOfTrains>0 else 0
-            avgMav = round(delaySumMav/numberOfTrainsMav, 2) if numberOfTrainsMav>0 else 0
-            avgGysev = round(delaySumGysev/numberOfTrainsGysev, 2) if numberOfTrainsGysev>0 else 0
-            
-            cursor.execute(insert_into_query.format("minden"), (avgAll, maxDelay))
-            cursor.execute(insert_into_query.format("mav"), (avgMav, maxDelayMav))
-            cursor.execute(insert_into_query.format("gysev"), (avgGysev, maxDelayGysev))
-            mydb.commit()
+                mydb = mysql.connector.connect(
+                        host=os.environ.get('QOVERY_DATABASE_KESESEK_HOST'),
+                        user=os.environ.get('QOVERY_DATABASE_KESESEK_USERNAME'),
+                        password=os.environ.get('QOVERY_DATABASE_KESESEK_PASSWORD'),
+                        database=os.environ.get('QOVERY_DATABASE_KESESEK_NAME'),
+                        buffered=True
+                    )
+                cursor = mydb.cursor()
+                insert_into_query = """
+                INSERT INTO {} (timestamp, keses, max) VALUES ( UNIX_TIMESTAMP(CONVERT_TZ(LOCALTIME(), '+00:00', @@session.time_zone)), '%s', '%s' )
+                """
+                avgAll = round(delaySum/numberOfTrains, 2) if numberOfTrains>0 else 0
+                avgMav = round(delaySumMav/numberOfTrainsMav, 2) if numberOfTrainsMav>0 else 0
+                avgGysev = round(delaySumGysev/numberOfTrainsGysev, 2) if numberOfTrainsGysev>0 else 0
+                cursor.execute(insert_into_query.format("minden"), (avgAll, maxDelay))
+                cursor.execute(insert_into_query.format("mav"), (avgMav, maxDelayMav))
+                cursor.execute(insert_into_query.format("gysev"), (avgGysev, maxDelayGysev))
+                mydb.commit()
 
-            
+            except:
+                pass
             time.sleep(300)
         
          
